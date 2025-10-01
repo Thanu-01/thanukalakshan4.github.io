@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thanuka Lakshan - CV</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #0f172a;
+      --header-green: #d6f5d6;
+      --primary: #0b5e3a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--accent);
+      line-height:1.5;
+      padding: 28px 12px;
+    }
+    .container{
+      max-width:900px;
+      margin: 18px auto;
+      background: var(--card);
+      border-radius:12px;
+      box-shadow: 0 8px 30px rgba(15,23,42,0.08);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 1fr 320px;
+    }
+    header.cv-header{
+      background: var(--header-green);
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:20px 24px;
+    }
+    .profile-photo{
+      width:96px; height:96px;
+      border-radius:12px;
+      overflow:hidden;
+      background:#fff;
+      display:flex; align-items:center; justify-content:center;
+      border:2px solid #ccc;
+    }
+    .profile-photo img{width:100%; height:100%; object-fit:cover; display:block}
+    header .head-info h1{margin:0;font-size:22px;}
+    header .head-info p{margin:6px 0 0; color:var(--muted); font-size:14px;}
+    .main{padding: 28px 32px;}
+    .section{margin-bottom:18px;}
+    .section h2{font-size:15px; margin-bottom:8px; color:var(--primary);}
+    p, li{font-size:14px;}
+    .skills-grid{display:flex; gap:10px; flex-wrap:wrap;}
+    .pill{background:#e9f5ef; padding:5px 10px; border-radius:999px; font-size:13px;}
+    .sidebar{padding:22px; border-left:1px solid #ddd; background:#fafafa;}
+    .contact-line{font-size:14px; margin-bottom:6px;}
+    .btn{
+      display:inline-block;
+      margin:5px;
+      padding:8px 12px;
+      border-radius:8px;
+      background:var(--primary);
+      color:white;
+      text-decoration:none;
+      font-weight:600;
+      cursor:pointer;
+      border:none;
+    }
+    .btn.secondary{background:transparent;color:var(--primary);border:1px solid var(--primary);}
+    @media(max-width:880px){
+      .container{grid-template-columns: 1fr;}
+      .sidebar{border-left:none; border-top:1px solid #ddd;}
+    }
+  </style>
+</head>
+<body>
+
+  <div style="max-width:900px; margin:0 auto 12px; text-align:right;">
+    <!-- buttons -->
+    <input id="photoInput" type="file" accept="image/*" style="display:none" />
+    <button class="btn secondary" onclick="document.getElementById('photoInput').click()">Upload Profile Photo</button>
+    <button class="btn" id="download-html">Download CV (HTML)</button>
+    <button class="btn" id="print-pdf">Save as PDF</button>
+  </div>
+
+  <article class="container" id="cv-root">
+    <div>
+      <!-- header -->
+      <header class="cv-header">
+        <div class="profile-photo" id="photoPreview">
+          <div style="font-weight:700; color:#0b5e3a; font-size:20px;">TL</div>
+        </div>
+        <div class="head-info">
+          <h1>Thanuka Lakshan</h1>
+          <p>Undergraduate — BSc (Hons) Biotechnology</p>
+          <p style="font-size:13px;">📞 +94 75 580 6687 | ✉️ thanukaluck001@gmail.com | 
+            <a href="https://www.linkedin.com/in/thanuka-lakshan" target="_blank">LinkedIn</a>
+          </p>
+        </div>
+      </header>
+
+      <main class="main">
+        <section class="section">
+          <h2>About</h2>
+          <p>I am a dedicated undergraduate in biotechnology ...</p>
+        </section>
+
+        <section class="section">
+          <h2>Expertize</h2>
+          <div class="skills-grid">
+            <span class="pill">Molecular Biology</span>
+            <span class="pill">Microbiology</span>
+            <span class="pill">Lab Research</span>
+            <span class="pill">Bioinformatics</span>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- sidebar -->
+    <aside class="sidebar">
+      <h3>Contact</h3>
+      <div class="contact-line">Phone: +94 75 580 6687</div>
+      <div class="contact-line">Email: thanukaluck001@gmail.com</div>
+      <div class="contact-line">LinkedIn: linkedin.com/in/thanuka-lakshan</div>
+    </aside>
+  </article>
+
+  <script>
+    // Profile picture upload preview
+    const photoInput = document.getElementById('photoInput');
+    const photoPreview = document.getElementById('photoPreview');
+    photoInput.addEventListener('change', e=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      if(!file.type.startsWith('image/')) return alert("Please select an image file.");
+      const reader = new FileReader();
+      reader.onload = ev=>{
+        photoPreview.innerHTML="";
+        const img=document.createElement("img");
+        img.src=ev.target.result;
+        photoPreview.appendChild(img);
+      }
+      reader.readAsDataURL(file);
+    });
+
+    // Download CV as HTML file
+    document.getElementById('download-html').addEventListener('click', ()=>{
+      const html="<!doctype html>\n"+document.documentElement.outerHTML;
+      const blob=new Blob([html],{type:"text/html"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url;
+      a.download="Thanuka-Lakshan-CV.html";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Save as PDF (print)
+    document.getElementById('print-pdf').addEventListener('click', ()=>{ window.print(); });
+  </script>
+</body>
+</html>
